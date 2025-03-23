@@ -14,4 +14,16 @@ track-controller
   POST /track-upload - Загрузка аудиозаписи
   POST /tracks-upload - Загрузка аудиозаписей -
   GET /tracks/{id} - Получить аудиозапись по id
+  
+genre-controller
+  POST /genre/genre-upload - Создание жанра
+  GET /genre/{id} - Получить жанр по id
+
+albums-controller
+  POST /albums/album-upload - Создание альбома
+  GET /albums/{id} - Получить альбом по id
+  
+artists-controller
+  POST /artists/artist-create - Создание артиста
+  GET /artists/{id}
 ```
