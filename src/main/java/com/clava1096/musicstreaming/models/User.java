@@ -18,6 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     private String name;
 
     private String username;
@@ -27,9 +28,9 @@ public class User {
     private String password;
 
 
-    //@Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "user_role")
-    private String userRole;
+    private UserRole userRole;
 
     @Override
     public String toString() {

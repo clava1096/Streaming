@@ -8,20 +8,20 @@ import com.clava1096.musicstreaming.models.dto.TrackSaveDTO;
 import com.clava1096.musicstreaming.models.repositories.AlbumRepository;
 import com.clava1096.musicstreaming.models.repositories.GenreRepository;
 import com.clava1096.musicstreaming.models.repositories.TrackRepository;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.time.LocalDate;
+import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TrackService {
+
+    private final String uploadDir = "/audio/";
 
     private final TrackRepository trackRepository;
 
@@ -32,6 +32,13 @@ public class TrackService {
     private final TrackMapper trackMapper;
 
     public TrackDTO createTrack(TrackSaveDTO trackSaveDTO) {
+        String finalUploadDir = uploadDir + trackSaveDTO.getAuthor() + "/"; // album null?
+        File uploadPath = new File(finalUploadDir);
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs();
+        }
+        log.info(uploadPath.getAbsolutePath());
+        trackSaveDTO.setFile(uploadPath.getAbsolutePath());
         Track track = trackMapper.toTrack(trackSaveDTO);
         trackRepository.save(track);
         return trackMapper.toTrackDTO(track);
@@ -42,4 +49,8 @@ public class TrackService {
         return trackMapper.toTrackDTO(track);
     }
 
+    public List<TrackDTO> getAllTracks(){
+        List<Track> tracks = trackRepository.findAll();
+        return trackMapper.toTrackDTOs(tracks);
+    }
 }

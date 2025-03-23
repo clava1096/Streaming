@@ -11,6 +11,7 @@ login-controller
   POST /login - авторизоваться за пользователя
   
 track-controller
-  POST /tracks - Создать аудиозапись  
+  POST /track-upload - Загрузка аудиозаписи
+  POST /tracks-upload - Загрузка аудиозаписей -
   GET /tracks/{id} - Получить аудиозапись по id
 ```

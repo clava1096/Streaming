@@ -2,13 +2,12 @@ package com.clava1096.musicstreaming.models.repositories;
 
 import com.clava1096.musicstreaming.models.Artist;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-public interface ArtistRepository extends JpaRepository<Artist, Long> {
+import java.util.UUID;
+
+public interface ArtistRepository extends JpaRepository<Artist, UUID> {
+
+    @Query("select e from Artist e where e.name like %:name% ")
     Artist findByName(String name);
-
-    Artist findByArtistId(Long artistId);
-
-    boolean existsByArtistName(String artistName);
-
-    boolean deleteByName(String name);
 }

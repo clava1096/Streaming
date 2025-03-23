@@ -16,8 +16,8 @@ public class MediaTypeDTO {
     @JsonProperty(value = "id", defaultValue = "8e262c04-a090-11e8-98d0-529269fb1459", required = true)
     private UUID id;
 
-    @Schema(description = "Название формата записи", example = "mp4")
-    @JsonProperty(value = "name", defaultValue = "mp4", required = true)
+    @Schema(description = "Название формата записи", example = "mp3")
+    @JsonProperty(value = "name", defaultValue = "mp3", required = true)
     private String name;
 
     @Schema(description = "Дата создания формата записи", example = "2019-08-06")

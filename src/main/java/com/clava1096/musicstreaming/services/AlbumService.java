@@ -7,7 +7,6 @@ import com.clava1096.musicstreaming.models.dto.AlbumSaveDTO;
 import com.clava1096.musicstreaming.models.repositories.AlbumRepository;
 import com.clava1096.musicstreaming.models.repositories.TrackRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +19,8 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumMapper albumMapper;
 
-    @Autowired
     private final ArtistService artistService; // найти по псевдониму все альбомы
 
-    @Autowired
     private final TrackRepository trackRepository; // вначале нужно удалить треки, ищем треки по id альбома
 
     @Transactional
@@ -35,7 +32,7 @@ public class AlbumService {
 
 
     public AlbumDTO updateAlbum(AlbumDTO albumDTO) {
-        Album album = albumRepository.findByAlbumId(albumDTO.getId());
+        Album album = albumRepository.findById(albumDTO.getId());
         if (albumMapper.ToAlbumDTO(album).equals(albumDTO)) {
             return albumMapper.ToAlbumDTO(album);
         }
@@ -51,8 +48,8 @@ public class AlbumService {
     }
 
     @Transactional(readOnly = true)
-    public AlbumDTO getAlbumByName(String name) {
-        Album album = albumRepository.findByName(name);
+    public AlbumDTO getAlbumByName(String title) {
+        Album album = albumRepository.findByTitle(title);
         return albumMapper.ToAlbumDTO(album);
     }
 

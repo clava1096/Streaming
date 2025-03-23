@@ -25,4 +25,14 @@ public class ArtistSaveDTO {
     @Schema(description = "День рождения артиста", example = "1985-10-07")
     @JsonProperty(value = "birthDate", required = true, defaultValue = "1985-10-07")
     private LocalDate birthDate;
+
+    @Override
+    public String toString() {
+        return "ArtistSaveDTO{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", pseudonym='" + pseudonym + '\'' +
+                ", birthDate=" + birthDate +
+                '}';
+    }
 }

@@ -2,12 +2,9 @@ package com.clava1096.musicstreaming.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -49,8 +46,28 @@ public class TrackSaveDTO {
     @JsonProperty(value = "genre", required = true)
     private GenreDTO genre;
 
-    @Schema(description = "Файл трека(аудиозаписи)")
-    private MultipartFile file;
+    @Schema(description = "Путь до трека(аудиозаписи)")
+    private String filePath;
+
+    public void setFile(String file) {
+        this.filePath = file;
+    }
+
+    @Override
+    public String toString() {
+        return "TrackSaveDTO{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", createdAt=" + createdAt +
+                ", milliseconds=" + milliseconds +
+                ", bytes=" + bytes +
+                ", album=" + album +
+                ", mediaType=" + mediaType +
+                ", genre=" + genre +
+                ", filePath='" + filePath + '\'' +
+                '}';
+    }
+
     //@Column(name = "file_path")
     //private String filePath;
     // Нужен ли filepath в saveDTO?

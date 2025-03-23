@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @RequiredArgsConstructor
 public class ArtistService {
@@ -25,12 +26,6 @@ public class ArtistService {
     public ArtistDTO createArtist(ArtistSaveDTO artistSaveDTO) {
         Artist artist = artistMapper.toArtist(artistSaveDTO);
         artistRepository.save(artist);
-        return artistMapper.toArtistDTO(artist);
-    }
-
-    @Transactional(readOnly = true)
-    public ArtistDTO getArtistById(long id){ // Обработка ошибки добавить
-        Artist artist = artistRepository.findByArtistId(id);
         return artistMapper.toArtistDTO(artist);
     }
 

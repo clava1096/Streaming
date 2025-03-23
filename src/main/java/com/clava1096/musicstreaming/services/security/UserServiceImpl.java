@@ -9,7 +9,6 @@ import com.clava1096.musicstreaming.models.enumpack.UserRole;
 import com.clava1096.musicstreaming.models.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +33,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public RegistrationResponse registration(RegistrationRequest registrationRequest) {
         userValidationService.validateUser(registrationRequest);
-
         final User user = new User();
         user.setEmail(registrationRequest.getEmail());
+        log.info(registrationRequest.getEmail());
         user.setUsername(registrationRequest.getUsername());
         user.setName(registrationRequest.getName());
         user.setPassword(bCryptPasswordEncoder.encode(registrationRequest.getPassword()));
-        user.setUserRole(String.valueOf(UserRole.USER));
+        user.setUserRole(UserRole.USER);
         log.info("Registering user: {}", user);
         userRepository.save(user);
 

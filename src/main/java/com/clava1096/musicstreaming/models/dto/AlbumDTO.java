@@ -12,7 +12,7 @@ import java.util.UUID;
 @Schema(description = "Альбом")
 @Getter
 @AllArgsConstructor
-public class AlbumDTO {
+public class    AlbumDTO {
     @Schema(description = "Идентификатор альбома", example = "8e262c04-a090-11e8-98d0-529269fb1459")
     @JsonProperty(value = "id", defaultValue = "8e262c04-a090-11e8-98d0-529269fb1459", required = true)
     private UUID id;

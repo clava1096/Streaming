@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -35,15 +34,25 @@ public class TrackController {
         return new ResponseEntity<>(service.getTrackById(trackId), HttpStatus.OK);
     }
 
+
     @Operation(summary = "Загрузка трека")
     @ApiResponse(responseCode = "200", description = "В случае успешного выполнения",
             content = @Content(schema = @Schema(implementation = TrackDTO.class)))
-    @PostMapping("/upload")
+    @PostMapping("/tracks-upload")
     public ResponseEntity<?> uploadTrack(
-            @Parameter(description = "Product to add cannot null or empty.", required = true, schema = @Schema(implementation = TrackSaveDTO.class))
-            @RequestParam("file") MultipartFile file,
+            @Parameter(description = "Product to add cannot null or empty.",
+                    required = true, schema = @Schema(implementation = TrackSaveDTO.class))
             @RequestBody TrackSaveDTO trackSaveDTO) {
-        log.info("Request to display a album with name of file {}", file.getOriginalFilename());
-        return new ResponseEntity<>(service.createTrack(trackSaveDTO),HttpStatus.OK);
+        return new ResponseEntity<>(service.createTrack(trackSaveDTO),
+                HttpStatus.OK);
     }
+
+    @Operation(summary = "Получить все аудиозаписи")
+    @ApiResponse(responseCode = "200", description = "В случае успешного выполнения",
+            content = @Content(schema = @Schema(implementation = TrackDTO.class)))
+    @GetMapping("/all-tracks")
+    public ResponseEntity<?> getAllTracks() {
+        return new ResponseEntity<>(service.getAllTracks(), HttpStatus.OK);
+    }
+
 }

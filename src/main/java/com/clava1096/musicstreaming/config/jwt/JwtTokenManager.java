@@ -4,6 +4,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.clava1096.musicstreaming.models.User;
+import com.clava1096.musicstreaming.models.enumpack.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,12 +20,12 @@ public class JwtTokenManager {
 
     public String generateToken(User user) {
         final String username = user.getUsername();
-        final String userRole = user.getUserRole();
+        final UserRole userRole = user.getUserRole();
         log.info(jwtProperties.getIssuer());
         return  JWT.create()
                 .withSubject(username)
                 .withIssuer(jwtProperties.getIssuer())
-                .withClaim("role", userRole)
+                .withClaim("role", userRole.ordinal())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpiration() * 60 * 1000))
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret().getBytes()));

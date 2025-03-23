@@ -1,19 +1,20 @@
 package com.clava1096.musicstreaming.models.repositories;
 
 import com.clava1096.musicstreaming.models.Album;
+import com.clava1096.musicstreaming.models.Artist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
 public interface AlbumRepository extends JpaRepository<Album, Long> {
-    Album findByName(String name);
+    Album findByTitle(String title);
 
-    Album findByArtist(String artist); ///
+    Album findByArtist(Artist artist); ///
 
-    Album findByAlbumId(UUID albumId);
+    Album findById(UUID albumId);
 
-    boolean existsByName(String name);
+    boolean existsByTitle(String title);
 
-    boolean deleteByName(String name); // нужны права на удаление редактирование треков и/или альбома
+    boolean deleteByTitle(String title); // нужны права на удаление редактирование треков и/или альбома
 
 }
