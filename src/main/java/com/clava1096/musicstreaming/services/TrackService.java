@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,8 +19,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class TrackService {
-
-    private final String uploadDir = "/audio/";
 
     private final TrackRepository trackRepository;
 
@@ -31,17 +28,14 @@ public class TrackService {
 
     private final TrackMapper trackMapper;
 
-    public TrackDTO createTrack(TrackSaveDTO trackSaveDTO) {
-        String finalUploadDir = uploadDir + trackSaveDTO.getAuthor() + "/"; // album null?
-        File uploadPath = new File(finalUploadDir);
-        if (!uploadPath.exists()) {
-            uploadPath.mkdirs();
-        }
-        log.info(uploadPath.getAbsolutePath());
-        trackSaveDTO.setFile(uploadPath.getAbsolutePath());
+    public TrackDTO createTrackMetadata(TrackSaveDTO trackSaveDTO) {
         Track track = trackMapper.toTrack(trackSaveDTO);
         trackRepository.save(track);
         return trackMapper.toTrackDTO(track);
+    }
+
+    public String uploadTrack(TrackSaveDTO trackSaveDTO) {
+        return null;
     }
 
     public TrackDTO getTrackById(UUID id){
@@ -53,4 +47,5 @@ public class TrackService {
         List<Track> tracks = trackRepository.findAll();
         return trackMapper.toTrackDTOs(tracks);
     }
+
 }

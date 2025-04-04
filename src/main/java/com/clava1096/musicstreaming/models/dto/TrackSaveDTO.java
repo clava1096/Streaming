@@ -46,13 +46,6 @@ public class TrackSaveDTO {
     @JsonProperty(value = "genre", required = true)
     private GenreDTO genre;
 
-    @Schema(description = "Путь до трека(аудиозаписи)")
-    private String filePath;
-
-    public void setFile(String file) {
-        this.filePath = file;
-    }
-
     @Override
     public String toString() {
         return "TrackSaveDTO{" +
@@ -64,7 +57,6 @@ public class TrackSaveDTO {
                 ", album=" + album +
                 ", mediaType=" + mediaType +
                 ", genre=" + genre +
-                ", filePath='" + filePath + '\'' +
                 '}';
     }
 

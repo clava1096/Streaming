@@ -16,6 +16,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "track")
 public class Track {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "track_id", nullable = false)
@@ -38,12 +39,9 @@ public class Track {
     @Column(name = "bytes")
     private Integer bytes;
 
+    // ключ к файлу на сервере s3
     @Column(name = "file_path")
     private String filePath;
-    // путь к файлу на сервере
-
-    //@Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
-    //private BigDecimal unitPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

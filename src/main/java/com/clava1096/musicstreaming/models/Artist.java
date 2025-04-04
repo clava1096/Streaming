@@ -30,6 +30,10 @@ public class Artist {
 
     private String description;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")  // Внешний ключ на пользователя
+    private User user;
+
     @JsonIgnore
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
     private List<Album> albums;

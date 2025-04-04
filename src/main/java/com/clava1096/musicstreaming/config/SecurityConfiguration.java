@@ -32,7 +32,8 @@ public class SecurityConfiguration{
         return http
                 .csrf(CsrfConfigurer::disable)
                 .cors(CorsConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("/reg",
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/reg",
                                 "/login",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
@@ -41,7 +42,10 @@ public class SecurityConfiguration{
                         )
                         .permitAll()
                         .anyRequest().
-                        authenticated())
+                        authenticated()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(handler -> handler.authenticationEntryPoint(unauthorizedHandler))

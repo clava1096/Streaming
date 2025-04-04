@@ -30,6 +30,7 @@ extra["snippetsDir"] = file("build/generated-snippets")
 dependencies {
     //implementation ("org.slf4j:slf4j-api:2.0.7")
     //implementation ("org.slf4j:slf4j-log4j12:2.0.7")
+    implementation("io.minio:minio:8.5.17")
     implementation ("org.mapstruct:mapstruct:1.6.3")
     implementation ("io.swagger.core.v3:swagger-annotations:2.2.28")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

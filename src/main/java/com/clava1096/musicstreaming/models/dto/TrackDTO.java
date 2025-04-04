@@ -24,9 +24,6 @@ public class TrackDTO {
     @JsonProperty("author")
     private String author;
 
-    @Schema(description = "Путь до файла", example = "tracks/Artist_id/Album_id/1.mp3")
-    private String filepath;
-
     @Schema(description = "Дата создания аудиозаписи", example = "2019-08-06T16:30:00Z")
     @JsonProperty(value = "createdAt", defaultValue = "2019-08-06T16:30:00Z", required = true)
     private ZonedDateTime createdAt;
