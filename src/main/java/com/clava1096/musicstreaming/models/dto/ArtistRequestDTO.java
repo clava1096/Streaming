@@ -5,7 +5,6 @@ import com.clava1096.musicstreaming.models.enumpack.RequestType;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -16,8 +15,8 @@ public class ArtistRequestDTO {
     private RequestType type;
     private RequestStatus status;
     private Long userId;
-    private UUID artistId;  // Для DELETION
-    private String reason;  // Для DELETION
-    private String additionalInfo;  // Для PROMOTION
+    private Long artistId;
+    private String reason;
+    private String additionalInfo;
     private LocalDateTime createdAt;
 }

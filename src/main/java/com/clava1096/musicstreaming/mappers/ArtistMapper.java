@@ -23,4 +23,5 @@ public interface ArtistMapper {
     @Mapping(target = "id", ignore = true) //bc we dont want to override id
     @Mapping(target = "albums", ignore = true)
     void updateArtist(@MappingTarget Artist artist, ArtistDTO artistDTO);
+
 }

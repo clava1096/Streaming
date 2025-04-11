@@ -13,4 +13,10 @@ public interface ArtistRepository extends JpaRepository<Artist, UUID> {
 
     @Query("select e from Artist e where e.name like %:name% ")
     Optional<List<Artist>> searchByName(@Param("name") String name);
+
+    @Query("SELECT a FROM Artist a WHERE a.id IN " +
+            "(SELECT r.artist.id FROM ArtistRequest r " +
+            "WHERE r.type = 'DELETION' AND r.status = 'PENDING')")
+    List<Artist> findArtistsWithPendingDeletionRequests();
+
 }

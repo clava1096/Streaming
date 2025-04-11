@@ -5,6 +5,7 @@ import com.clava1096.musicstreaming.config.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,9 +42,33 @@ public class SecurityConfiguration{
                                 "/actuator/**"
                         )
                         .permitAll()
-                        .anyRequest().
-                        authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // Маршруты для треков
+                        .requestMatchers(HttpMethod.POST, "/track").hasAnyRole("ARTIST", "ADMIN", "MODERATOR")
+                        .requestMatchers(HttpMethod.PUT, "/track/{id}/upload").hasAnyRole("ARTIST", "ADMIN", "MODERATOR")
+                        .requestMatchers(HttpMethod.GET, "/tracks/{id}", "/track/{id}/stream-url").hasAnyRole("USER", "ARTIST", "MODERATOR", "ADMIN")
+
+                        // Маршруты для жанров
+                        .requestMatchers(HttpMethod.POST, "/genres").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/genres/{id}").hasRole("ADMIN")
+
+                        // Маршруты для альбомов
+                        .requestMatchers(HttpMethod.POST, "/albums").hasAnyRole("ARTIST", "ADMIN", "MODERATOR")
+                        .requestMatchers(HttpMethod.GET, "/albums/{id}").hasAnyRole("USER", "ARTIST", "MODERATOR", "ADMIN")
+
+                        // Маршруты для артистов
+                        .requestMatchers(HttpMethod.POST, "/artists").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/artists/requests").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/artists/{id}").hasAnyRole("USER", "ARTIST", "MODERATOR", "ADMIN")
+
+                        // Маршруты для медиа-типов
+                        .requestMatchers(HttpMethod.POST, "/media-type/create").hasRole("ARTIST")
+                        .requestMatchers(HttpMethod.GET, "/media-type/{id}").hasAnyRole("USER", "ARTIST", "MODERATOR", "ADMIN")
+
+                        // Админ-панель
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // Все остальные запросы требуют аутентификации
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

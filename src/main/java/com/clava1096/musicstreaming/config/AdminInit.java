@@ -30,7 +30,7 @@ public class AdminInit {
             User user = new User();
             user.setUsername(defaultAdminUsername);
             user.setPassword(bCryptPasswordEncoder.encode(defaultAdminPassword));
-            user.setUserRole(UserRole.ADMIN);
+            user.setUserRole(UserRole.ROLE_ADMIN);
             userRepository.save(user);
         }
     }

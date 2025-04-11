@@ -9,12 +9,12 @@ import java.util.UUID;
 public interface AlbumRepository extends JpaRepository<Album, Long> {
     Album findByTitle(String title);
 
-    Album findByArtist(Artist artist); ///
+    Album findByArtist(Artist artist);
 
     Album findById(UUID albumId);
 
     boolean existsByTitle(String title);
 
-    boolean deleteByTitle(String title); // нужны права на удаление редактирование треков и/или альбома
+    boolean deleteByTitle(String title);
 
 }

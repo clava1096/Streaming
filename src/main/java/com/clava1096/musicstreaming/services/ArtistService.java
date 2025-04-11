@@ -2,34 +2,41 @@ package com.clava1096.musicstreaming.services;
 
 import com.clava1096.musicstreaming.exceptions.custom.NotFoundInDBException;
 import com.clava1096.musicstreaming.mappers.ArtistMapper;
-import com.clava1096.musicstreaming.models.Album;
 import com.clava1096.musicstreaming.models.Artist;
 import com.clava1096.musicstreaming.models.ArtistRequest;
+import com.clava1096.musicstreaming.models.User;
 import com.clava1096.musicstreaming.models.dto.*;
 import com.clava1096.musicstreaming.models.enumpack.RequestStatus;
 import com.clava1096.musicstreaming.models.enumpack.RequestType;
-import com.clava1096.musicstreaming.models.repositories.AlbumRepository;
+import com.clava1096.musicstreaming.models.enumpack.UserRole;
 import com.clava1096.musicstreaming.models.repositories.ArtistRepository;
+import com.clava1096.musicstreaming.models.repositories.ArtistRequestRepository;
+import com.clava1096.musicstreaming.models.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArtistService {
+
+    private final ArtistRequestRepository artistRequestRepository;
+
     private final ArtistRepository artistRepository;
 
     private final ArtistMapper artistMapper;
 
-    private final AlbumRepository albumRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public ArtistDTO createArtist(ArtistSaveDTO artistSaveDTO) {
         Artist artist = artistMapper.toArtist(artistSaveDTO);
+        log.info(artist.toString());
         artistRepository.save(artist);
         return artistMapper.toArtistDTO(artist);
     }
@@ -67,48 +74,37 @@ public class ArtistService {
                 .status(RequestStatus.PENDING)
                 .reason(dto.getReason())
                 .build();
-
         return null;
-        //requestRepo.save(request);
-        //return convertToDTO(request);
     }
 
-    // запрос на повышение
     @Transactional
-    public ArtistDTO approvePromotionRequest(UUID requestId) {
-        ArtistRequest request = requestRepo.findById(requestId)
-                .orElseThrow(() -> new NotFoundInDBException("Не найден Артист по id = " + requestId));
+    public ArtistRequestDTO createPromotionRequest(ArtistPromotionRequestDTO artistPromotionRequestDTO) {
+        User user = userRepository.findById(artistPromotionRequestDTO.getUserId())
+                .orElseThrow(() -> new NotFoundInDBException("Пользователь не найден по id: " + artistPromotionRequestDTO.getUserId()));
 
-        if (request.getType() != RequestType.PROMOTION) {
-            throw new IllegalStateException("Not a promotion request");
+        if (user.getUserRole() == UserRole.ROLE_ARTIST) {
+            throw new NotFoundInDBException("Пользователь уже артист");
         }
 
-        User user = request.getUser();
-        Artist artist = Artist.builder()
-                .name(user.getName())
+        if (artistRequestRepository.existsByUserAndStatus(user, RequestStatus.PENDING)) {
+            throw new NotFoundInDBException("Пользователь уже отправил запрос на повышение");
+        }
+
+        ArtistRequest request = ArtistRequest.builder()
                 .user(user)
+                .type(RequestType.PROMOTION)
+                .status(RequestStatus.PENDING)
+                .additionalInfo(artistPromotionRequestDTO.getAdditionalInfo())
                 .build();
 
-        artistRepo.save(artist);
-        user.setUserRole(UserRole.ARTIST);
-        request.setStatus(RequestStatus.APPROVED);
-
-        return artistMapper.toDTO(artist);
+        artistRequestRepository.save(request);
+        return ArtistRequestDTO.builder()
+                .id(request.getId())
+                .type(request.getType())
+                .status(request.getStatus())
+                .userId((long) request.getUser().getId())
+                .additionalInfo(request.getAdditionalInfo())
+                .createdAt(request.getCreatedAt())
+                .build();
     }
-
-    // запрос на удаление
-    //    @Transactional
-    //    public void approveDeletionRequest(Long requestId) {
-    //        ArtistRequest request = requestRepo.findById(requestId)
-    //                .orElseThrow(() -> new EntityNotFoundException("Request not found"));
-    //
-    //        if (request.getType() != RequestType.DELETION) {
-    //            throw new IllegalStateException("Not a deletion request");
-    //        }
-    //
-    //        Artist artist = request.getArtist();
-    //        artist.setDeleted(true);  // Мягкое удаление
-    //        request.setStatus(RequestStatus.APPROVED);
-    //    }
-
 }

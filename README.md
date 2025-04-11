@@ -2,11 +2,7 @@
 
 - Включает: SpringBoot v3, Spring Data JPA, Spring Validation, Spring Security (используется JWT Token), Mapstruct, Lombok, Swagger, Minio s3
 
-Swagger документация - http://localhost:8181/api/swagger-ui/index.html
-
-
-!!исправлена документация, но не исправлены маршруты, будь внимательнее
-!!маршруты нужно разделить на ролевую модель
+Swagger документация - http://localhost:8080/swagger-ui/index.html
 
 ```
 registration-controller (ALL)
@@ -41,9 +37,9 @@ mediatype-controller:
     GET /media-type/{id} - Получить медиа-тип по id (min USER)
 
 admin-panel:
-    GET /admin/artist-promotion-requests - Возвращает список всех пользоваталей, которые запросили доступ стать артистом, а так же необходимые данные
-    POST /admin/artists/promote - Повышает пользователей до роли артиста
-    GET /admin/artists/deletion-requests - Возвращает список всех пользователей-артистов, которые запросили удаление
+    GET /admin/artist-requests - Возвращает список всех пользоваталей, которые запросили доступ стать артистом, а так же необходимые данные
+    POST /admin/approve-artist/{id} - Повышает пользователей до роли артиста
+    GET /admin/artists-to-delete - Возвращает список всех пользователей-артистов, которые запросили удаление
     DELETE /admin/artists/{id} - Удаляет артиста, все его треки и все записи в БД.
     DELETE /admin/tracks/{id} - Удаление трека. Запись в БД остается, но трек не доступен.
 ```

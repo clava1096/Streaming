@@ -36,6 +36,7 @@ public class ArtistController {
     public ResponseEntity<?> createArtist(
             @Parameter(description = "Добавляет артиста", required = true, schema = @Schema(implementation = ArtistSaveDTO.class))
             @Valid @RequestBody ArtistSaveDTO artistSaveDTO) {
+        log.info(artistSaveDTO.toString());
         return new ResponseEntity<>(artistService.createArtist(artistSaveDTO), HttpStatus.CREATED);
     }
 
@@ -62,10 +63,10 @@ public class ArtistController {
     @ApiResponse(responseCode = "201", description = "Запрос успешно создан")
     @PostMapping("/promote")
     public ResponseEntity<?> createPromotionRequest(
-            @RequestBody @Valid ArtistPromotionRequestDTO dto
+            @RequestBody @Valid ArtistPromotionRequestDTO artistPromotionRequestDTO
     ) {
-        ArtistDTO request = artistService.approvePromotionRequest(dto.getUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(request);
+        ArtistRequestDTO createdRequest = artistService.createPromotionRequest(artistPromotionRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
     }
 
 }

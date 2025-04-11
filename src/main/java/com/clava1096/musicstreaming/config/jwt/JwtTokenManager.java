@@ -25,7 +25,7 @@ public class JwtTokenManager {
         return  JWT.create()
                 .withSubject(username)
                 .withIssuer(jwtProperties.getIssuer())
-                .withClaim("role", userRole.ordinal())
+                .withClaim("role", userRole.getAuthority())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpiration() * 60 * 1000))
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret().getBytes()));
